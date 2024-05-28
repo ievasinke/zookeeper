@@ -31,22 +31,23 @@ function displayAnimals($animals)
     $outputAnimal = new ConsoleOutput();
     $tableAnimal = new Table($outputAnimal);
     $tableAnimal
-        ->setHeaders(['Index', 'Animal', 'Favorite food', 'Happiness', 'Food reserves'])
+        ->setHeaders(['Index', 'Animal', 'Favorite food', 'Happiness', 'Food reserves', 'Last meal'])
         ->setRows(array_map(function ($index, $animal) {
             return [
                 $index,
                 $animal->getName(),
                 $animal->getFavoriteFood(),
                 $animal->getHappinessLevel(),
-                $animal->getFoodReserves()
+                $animal->getFoodReserves(),
+                $animal->getLastFed()
             ];
         }, array_keys($animals), $animals))
         ->render();
 }
 
-function displayFoods($foods)
+function displayFoods($foods, $selectedAnimal)
 {
-    echo Color::bold_purple(), "Select food to feed:\n", Color::reset();
+    echo Color::bold_purple(), "Select food to feed {$selectedAnimal->getname()}:\n", Color::reset();
     $outputFood = new ConsoleOutput();
     $tableFood = new Table($outputFood);
     $tableFood
@@ -63,7 +64,7 @@ while (true) {
     displayAnimals($animals);
     $animalIndex = (int)readline("Enter the number of the animal you want to interact with: ");
     if (!isset($animals[$animalIndex])) {
-        echo "Invalid selection. Please try again.\n";
+        echo Color::blue(), "Invalid selection. Please try again.\n", Color::reset();
         continue;
     }
 
@@ -93,29 +94,41 @@ while (true) {
     switch ($action) {
         case 1:
             $activity->play($selectedAnimal);
-            echo "You played with {$selectedAnimal->getName()}.\n";
+            echo
+            Color::bold_cyan(),
+            "You played with {$selectedAnimal->getName()}.\n",
+            Color::reset();
             break;
         case 2:
             $activity->work($selectedAnimal);
-            echo "You made {$selectedAnimal->getName()} work.\n";
+            echo
+            Color::bold_cyan(),
+            "You made {$selectedAnimal->getName()} work.\n",
+            Color::reset();
             break;
         case 3:
-            displayFoods($foods);
+            displayFoods($foods, $selectedAnimal);
             $foodIndex = (int)readline("Enter the number of the food you want to give: ");
             if (!isset($foods[$foodIndex])) {
-                echo "Invalid selection. Please try again.\n";
+                echo Color::blue(), "Invalid selection. Please try again.\n", Color::reset();
                 break;
             }
             $selectedFood = $foods[$foodIndex];
             $activity->feed($selectedAnimal, $selectedFood);
-            echo "You fed {$selectedAnimal->getName()} with {$selectedFood->getName()}.\n";
+            echo
+            Color::bold_cyan(),
+            "You fed {$selectedAnimal->getName()} with {$selectedFood->getName()}.\n",
+            Color::reset();
             break;
         case 4:
             $activity->pet($selectedAnimal);
-            echo Color::bold_cyan(), "You petted {$selectedAnimal->getName()}.\n", Color::reset();
+            echo
+            Color::bold_cyan(),
+            "You petted {$selectedAnimal->getName()}.\n",
+            Color::reset();
             break;
         default:
-            echo "Invalid action. Please try again.\n";
+            echo Color::blue(), "Invalid action. Please try again.\n", Color::reset();
             break;
     }
 
