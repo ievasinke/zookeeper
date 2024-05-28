@@ -6,6 +6,8 @@ use App\Activity;
 use App\Animal;
 use App\Food;
 use Codedungeon\PHPCliColors\Color;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 $animals = [
     new Animal('horse', 55, 'hay'),
@@ -25,23 +27,34 @@ $foods = [
 
 function displayAnimals($animals)
 {
-    echo "Select an animal:\n";
-    foreach ($animals as $index => $animal) {
-        echo "[$index] ",
-        Color::bold_purple(), "{$animal->getName()}'s ", Color::reset(),
-        "favorite food is ",
-        Color::green(), "{$animal->getFavoriteFood()}.\n", Color::reset(),
-            "(Happiness: {$animal->getHappinessLevel()}, " .
-            "Food Reserves: {$animal->getFoodReserves()})\n";
-    }
+    echo Color::bold_purple(), "Select an animal:\n", Color::reset();
+    $outputAnimal = new ConsoleOutput();
+    $tableAnimal = new Table($outputAnimal);
+    $tableAnimal
+        ->setHeaders(['Index', 'Animal', 'Favorite food', 'Happiness', 'Food reserves'])
+        ->setRows(array_map(function ($index, $animal) {
+            return [
+                $index,
+                $animal->getName(),
+                $animal->getFavoriteFood(),
+                $animal->getHappinessLevel(),
+                $animal->getFoodReserves()
+            ];
+        }, array_keys($animals), $animals))
+        ->render();
 }
 
 function displayFoods($foods)
 {
-    echo "Select food to feed:\n";
-    foreach ($foods as $index => $food) {
-        echo "[$index] {$food->getName()} (Amount: {$food->getAmount()})\n";
-    }
+    echo Color::bold_purple(), "Select food to feed:\n", Color::reset();
+    $outputFood = new ConsoleOutput();
+    $tableFood = new Table($outputFood);
+    $tableFood
+        ->setHeaders(['Index', 'Food', 'Amount'])
+        ->setRows(array_map(function ($index, $food) {
+            return [$index, $food->getName(), $food->getAmount()];
+        }, array_keys($foods), $foods))
+        ->render();
 }
 
 $activity = new Activity();
@@ -58,11 +71,18 @@ while (true) {
 
     echo "You selected {$selectedAnimal->getName()}.\n";
     echo "What do you want to do?\n";
-    echo "[1] Play\n";
-    echo "[2] Work\n";
-    echo "[3] Feed\n";
-    echo "[4] Pet\n";
-    echo "[0] Exit\n";
+    $outputActivities = new ConsoleOutput();
+    $tableActivities = new Table($outputActivities);
+    $tableActivities
+        ->setHeaders(['Index', 'Activity'])
+        ->setRows([
+            ['1', 'Play'],
+            ['2', 'Work'],
+            ['3', 'Feed'],
+            ['4', 'Pet'],
+            ['0', 'Exit'],
+        ])
+        ->render();
 
     $action = (int)readline("Enter the number of the action: ");
 
@@ -92,7 +112,7 @@ while (true) {
             break;
         case 4:
             $activity->pet($selectedAnimal);
-            echo "You petted {$selectedAnimal->getName()}.\n";
+            echo Color::bold_cyan(), "You petted {$selectedAnimal->getName()}.\n", Color::reset();
             break;
         default:
             echo "Invalid action. Please try again.\n";
@@ -104,4 +124,4 @@ while (true) {
     Food Reserves: {$selectedAnimal->getFoodReserves()}.\n";
 }
 
-echo Color::bold_cyan(), "Goodbye!\n";
+echo Color::bold_cyan(), "Goodbye!\n", Color::reset();

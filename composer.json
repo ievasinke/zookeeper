@@ -11,6 +11,8 @@
     }
   ],
   "require": {
-    "codedungeon/php-cli-colors": "^1.12"
+    "codedungeon/php-cli-colors": "^1.12",
+    "symfony/console": "^5.4",
+    "nesbot/carbon": "^2.72"
   }
 }
