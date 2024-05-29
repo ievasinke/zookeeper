@@ -10,19 +10,17 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 $animals = [
-    new Animal('horse', 55, 'hay'),
-    new Animal('rabbit', 75, 'carrot'),
-    new Animal('panda', 60, 'bamboo'),
-    new Animal('parrot', 80, 'seeds'),
+    new Animal('horse', 55, 'plant'),
+    new Animal('rabbit', 75, 'vegetable'),
+    new Animal('panda', 60, 'plant'),
+    new Animal('parrot', 80, 'grain'),
 ];
 
 $foods = [
-    new Food('apple', 840),
-    new Food('carrot', 220),
-    new Food('cucumber', 420),
-    new Food('seeds', 390),
-    new Food('bamboo', 555),
-    new Food('hay', 160),
+    new Food('fruit', 840),
+    new Food('vegetable', 220),
+    new Food('grain', 390),
+    new Food('plant', 555),
 ];
 
 function displayAnimals($animals)
@@ -93,7 +91,7 @@ while (true) {
 
     switch ($action) {
         case 1:
-            $activity->play($selectedAnimal);
+            $activity->play($selectedAnimal, $foods);
             echo
             Color::bold_cyan(),
             "You played with {$selectedAnimal->getName()}.\n",

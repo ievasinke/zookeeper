@@ -47,29 +47,36 @@ class Animal
         return $this->lastFed;
     }
 
-    public function play()
+    public function play(array $foods)
     {
+        $favoriteFood = Food::getFoodByFavorite($foods, $this->favoriteFood);
         $this->lastFed = Carbon::now()->addSeconds(5);
         $this->happinessLevel += 10;
-        $this->foodReserves += 10;
+        $foodConsumption = 10;
+        $this->foodReserves += $foodConsumption;
+        $favoriteFood->reduceBy($foodConsumption);
     }
 
     public function work()
     {
         $this->happinessLevel -= 5;
-        $this->foodReserves -= 10;
+        $foodConsumption = 10;
+        $this->foodReserves -= $foodConsumption;
     }
 
     public function feed(Food $food)
     {
+        $foodConsumption = 10;
         if ($food->getName() === $this->favoriteFood) {
 
             $this->happinessLevel += 5;
-            $this->foodReserves += 10;
+            $this->foodReserves += $foodConsumption;
             $this->lastFed = Carbon::now();
+            $food->reduceBy($foodConsumption);
         } else {
             $this->happinessLevel -= 5;
-            $this->foodReserves -= 10 * 2;
+            $this->foodReserves -= $foodConsumption * 2;
+            $food->reduceBy($foodConsumption * 2);
         }
     }
 

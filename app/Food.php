@@ -22,4 +22,19 @@ class Food
         return $this->amount;
     }
 
+    public function reduceBy(int $reduceAmount)
+    {
+        $this->amount -= $reduceAmount;
+    }
+
+    public static function getFoodByFavorite(array $foods, string $name): ?Food
+    {
+        $favoriteFood = null;
+        foreach ($foods as $food) {
+            if ($food->getName() === $name) {
+                $favoriteFood = $food;
+            }
+        }
+        return $favoriteFood;
+    }
 }

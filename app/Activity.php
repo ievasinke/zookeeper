@@ -7,9 +7,9 @@ use App\Food;
 
 class Activity
 {
-    public function play(Animal $animal)
+    public function play(Animal $animal, array $foods)
     {
-        $animal->play();
+        $animal->play($foods);
     }
 
     public function work(Animal $animal)
