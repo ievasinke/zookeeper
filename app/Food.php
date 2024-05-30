@@ -1,6 +1,7 @@
 <?php
 
-namespace App;
+namespace app;
+
 class Food
 {
     private string $name;
@@ -22,7 +23,7 @@ class Food
         return $this->amount;
     }
 
-    public function reduceBy(int $reduceAmount)
+    public function reduceBy(int $reduceAmount): void
     {
         $this->amount -= $reduceAmount;
     }

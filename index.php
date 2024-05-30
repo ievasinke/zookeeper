@@ -2,7 +2,6 @@
 
 require_once 'vendor/autoload.php';
 
-use App\Activity;
 use App\Animal;
 use App\Food;
 use Codedungeon\PHPCliColors\Color;
@@ -23,14 +22,14 @@ $foods = [
     new Food('plant', 555),
 ];
 
-function displayAnimals($animals)
+function displayAnimals($animals): void
 {
     echo Color::bold_purple(), "Select an animal:\n", Color::reset();
     $outputAnimal = new ConsoleOutput();
     $tableAnimal = new Table($outputAnimal);
     $tableAnimal
         ->setHeaders(['Index', 'Animal', 'Favorite food', 'Happiness', 'Food reserves', 'Last meal'])
-        ->setRows(array_map(function ($index, $animal) {
+        ->setRows(array_map(function ($index, Animal $animal): array {
             return [
                 $index,
                 $animal->getName(),
@@ -43,7 +42,7 @@ function displayAnimals($animals)
         ->render();
 }
 
-function displayFoods($foods, $selectedAnimal)
+function displayFoods($foods, $selectedAnimal): void
 {
     echo Color::bold_purple(), "Select food to feed {$selectedAnimal->getname()}:\n", Color::reset();
     $outputFood = new ConsoleOutput();
@@ -56,8 +55,6 @@ function displayFoods($foods, $selectedAnimal)
         ->render();
 }
 
-$activity = new Activity();
-
 while (true) {
     displayAnimals($animals);
     $animalIndex = (int)readline("Enter the number of the animal you want to interact with: ");
@@ -68,7 +65,7 @@ while (true) {
 
     $selectedAnimal = $animals[$animalIndex];
 
-    echo "You selected {$selectedAnimal->getName()}.\n";
+    echo Color::bold_cyan(), "You selected {$selectedAnimal->getName()}.\n", Color::reset();
     echo "What do you want to do?\n";
     $outputActivities = new ConsoleOutput();
     $tableActivities = new Table($outputActivities);
@@ -91,14 +88,14 @@ while (true) {
 
     switch ($action) {
         case 1:
-            $activity->play($selectedAnimal, $foods);
+            $selectedAnimal->play($foods);
             echo
             Color::bold_cyan(),
             "You played with {$selectedAnimal->getName()}.\n",
             Color::reset();
             break;
         case 2:
-            $activity->work($selectedAnimal);
+            $selectedAnimal->work();
             echo
             Color::bold_cyan(),
             "You made {$selectedAnimal->getName()} work.\n",
@@ -112,14 +109,14 @@ while (true) {
                 break;
             }
             $selectedFood = $foods[$foodIndex];
-            $activity->feed($selectedAnimal, $selectedFood);
+            $selectedAnimal->feed($selectedFood);
             echo
             Color::bold_cyan(),
             "You fed {$selectedAnimal->getName()} with {$selectedFood->getName()}.\n",
             Color::reset();
             break;
         case 4:
-            $activity->pet($selectedAnimal);
+            $selectedAnimal->pet();
             echo
             Color::bold_cyan(),
             "You petted {$selectedAnimal->getName()}.\n",

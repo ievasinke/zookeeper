@@ -1,9 +1,8 @@
 <?php
 
-namespace App;
+namespace app;
 
 use App\Food;
-use App\Activity;
 use Carbon\Carbon;
 
 class Animal
@@ -13,8 +12,14 @@ class Animal
     private string $favoriteFood;
     private int $foodReserves = 100;
     private string $lastFed;
+    const FOOD_CONSUMPTION = 10;
 
-    public function __construct(string $name, int $happinessLevel, string $favoriteFood)
+
+    public function __construct(
+        string $name,
+        int    $happinessLevel,
+        string $favoriteFood
+    )
     {
         $this->name = $name;
         $this->happinessLevel = $happinessLevel;
@@ -47,40 +52,37 @@ class Animal
         return $this->lastFed;
     }
 
-    public function play(array $foods)
+    public function play(array $foods): void
     {
         $favoriteFood = Food::getFoodByFavorite($foods, $this->favoriteFood);
         $this->lastFed = Carbon::now()->addSeconds(5);
         $this->happinessLevel += 10;
-        $foodConsumption = 10;
-        $this->foodReserves += $foodConsumption;
-        $favoriteFood->reduceBy($foodConsumption);
+        $this->foodReserves += self::FOOD_CONSUMPTION;
+        $favoriteFood->reduceBy(self::FOOD_CONSUMPTION);
     }
 
-    public function work()
+    public function work(): void
     {
         $this->happinessLevel -= 5;
-        $foodConsumption = 10;
-        $this->foodReserves -= $foodConsumption;
+        $this->foodReserves -= self::FOOD_CONSUMPTION;
     }
 
-    public function feed(Food $food)
+    public function feed(Food $food): void
     {
-        $foodConsumption = 10;
         if ($food->getName() === $this->favoriteFood) {
 
             $this->happinessLevel += 5;
-            $this->foodReserves += $foodConsumption;
+            $this->foodReserves += self::FOOD_CONSUMPTION;
             $this->lastFed = Carbon::now();
-            $food->reduceBy($foodConsumption);
+            $food->reduceBy(self::FOOD_CONSUMPTION);
         } else {
             $this->happinessLevel -= 5;
-            $this->foodReserves -= $foodConsumption * 2;
-            $food->reduceBy($foodConsumption * 2);
+            $this->foodReserves -= self::FOOD_CONSUMPTION * 2;
+            $food->reduceBy(self::FOOD_CONSUMPTION * 2);
         }
     }
 
-    public function pet()
+    public function pet(): void
     {
         $this->happinessLevel += 5;
     }
