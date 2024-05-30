@@ -6,35 +6,36 @@ them.
 
 ## Features
 
-* Play with Animals: Increases the animal's happiness and food reserves.
-* Work with Animals: Decreases both the animal's happiness and its food reserves.
-* Feed Animals: Increases the animal's happiness and food reserves if you give the correct food. If the wrong food is
-  given, the animal's happiness decreases and food reserves drop twice as much.
-* Pet Animals: Increases the animal's happiness.
+- **Play with Animals:** Increases the animal's happiness and food reserves.
+- **Work with Animals:** Decreases both the animal's happiness and its food reserves.
+- **Feed Animals:** Increases the animal's happiness and food reserves if you give the correct food. If the wrong food
+  is given, the animal's happiness decreases and food reserves drop twice as much.
+- **Pet Animals:** Increases the animal's happiness.
 
 ## Getting Started
 
 ### Prerequisites
 
-PHP >= 7.4 installed on your machine.
+- PHP >= 7.4 installed on your machine.
+- Composer (https://getcomposer.org/) installed for managing dependencies.
 
-Composer (https://getcomposer.org/) installed for managing dependencies
+### Installation
 
-### Installation:
-
-Clone the repository:
-```git clone https://github.com/yourusername/zookeeper.git```
-
-Navigate to the project directory:
-```cd zookeeper```
-Install dependencies using Composer:
-```composer install```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/zookeeper.git
+2. Navigate to the project directory:
+   ```bash
+   cd zookeeper
+3. Install dependencies using Composer:
+   ```bash
+   composer install
 
 ### Usage
 
 1. Run the application
-
-```php index.php```
+   ```bash
+    php index.php
 
 2. Select an animal to interact with from the list provided.
 
