@@ -70,16 +70,15 @@ class Animal
     public function feed(Food $food): void
     {
         if ($food->getName() === $this->favoriteFood) {
-
             $this->happinessLevel += 5;
             $this->foodReserves += self::FOOD_CONSUMPTION;
             $this->lastFed = Carbon::now();
             $food->reduceBy(self::FOOD_CONSUMPTION);
-        } else {
-            $this->happinessLevel -= 5;
-            $this->foodReserves -= self::FOOD_CONSUMPTION * 2;
-            $food->reduceBy(self::FOOD_CONSUMPTION * 2);
+            return;
         }
+        $this->happinessLevel -= 5;
+        $this->foodReserves -= self::FOOD_CONSUMPTION * 2;
+        $food->reduceBy(self::FOOD_CONSUMPTION * 2);
     }
 
     public function pet(): void
